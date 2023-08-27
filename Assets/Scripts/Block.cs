@@ -2,71 +2,87 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Block : MonoBehaviour
+public static class Block
 {
-    public static Vector3[] vertices = new Vector3[24] {
-        // Front
-        new Vector3(0, 0, 0),
-        new Vector3(1, 0, 0),
-        new Vector3(0, 1, 0),
-        new Vector3(1, 1, 0),
+    // Vertices do bloco
+    public static Vector3[,] vertices = new Vector3[6, 4] {
+        // Frente
+        { 
+            new Vector3(0, 0, 0),
+            new Vector3(1, 0, 0),
+            new Vector3(0, 1, 0),
+            new Vector3(1, 1, 0) 
+        },
 
-        // Back
-        new Vector3(1, 0, 1),
-        new Vector3(0, 0, 1),
-        new Vector3(1, 1, 1),
-        new Vector3(0, 1, 1),
+        // Trás
+        {
+            new Vector3(1, 0, 1),
+            new Vector3(0, 0, 1),
+            new Vector3(1, 1, 1),
+            new Vector3(0, 1, 1)
+        },
 
-        // Right
-        new Vector3(1, 0, 0),
-        new Vector3(1, 0, 1),
-        new Vector3(1, 1, 0),
-        new Vector3(1, 1, 1),
+        // Direita
+        { 
+            new Vector3(1, 0, 0),
+            new Vector3(1, 0, 1),
+            new Vector3(1, 1, 0),
+            new Vector3(1, 1, 1) 
+        },
 
-        // Left
-        new Vector3(0, 0, 1),
-        new Vector3(0, 0, 0),
-        new Vector3(0, 1, 1),
-        new Vector3(0, 1, 0),
+        // Esquerda
+        { 
+            new Vector3(0, 0, 1),
+            new Vector3(0, 0, 0),
+            new Vector3(0, 1, 1),
+            new Vector3(0, 1, 0) 
+        },
 
-        // Top
-        new Vector3(0, 1, 0),
-        new Vector3(1, 1, 0),
-        new Vector3(0, 1, 1),
-        new Vector3(1, 1, 1),
+        // Cima
+        { 
+            new Vector3(0, 1, 0),
+            new Vector3(1, 1, 0),
+            new Vector3(0, 1, 1),
+            new Vector3(1, 1, 1) 
+        },
 
-        // Bottom
-        new Vector3(0, 0, 1),
-        new Vector3(1, 0, 1),
-        new Vector3(0, 0, 0),
-        new Vector3(1, 0, 0)
-
+        // Baixo
+        { 
+            new Vector3(0, 0, 1),
+            new Vector3(1, 0, 1),
+            new Vector3(0, 0, 0),
+            new Vector3(1, 0, 0)
+        }
     };
 
-    public static int[] triangles = new int[36]
+    // Triângulos do bloco
+    public static int[,] triangles = new int[6,6]
     {
-        // Front
-        0, 2, 3,
-        0, 3, 1,
+        { 0, 2, 3, 0, 3, 1}, // Frente
+        { 4, 6, 7, 4, 7, 5}, // Trás
+        { 8, 10, 11, 8, 11, 9}, // Direita
+        { 12, 14, 15, 12, 15, 13}, // Esquerda
+        { 16, 18, 19, 16, 19, 17}, // Cima
+        { 20, 22, 23, 20, 23, 21} // Baixo
+    };
 
-        // Back
-        4, 6, 7,
-        4, 7, 5,
+    // Uvs do bloco
+    public static Vector2[] uvs = new Vector2[4]
+    {
+        new Vector2(0, 0),
+        new Vector2(1, 0),
+        new Vector2(0, 1),
+        new Vector2(1, 1)
+    };
 
-        // Right
-        8, 10, 11,
-        8, 11, 9,
-
-        // Left
-        12, 14, 15,
-        12, 15, 13,
-
-        // Top
-        16, 18, 19,
-        16, 19, 17,
-
-        // Bottom
-        20, 22, 23,
-        20, 23, 21
+    // Faces do bloco a serem checadas
+    public static Vector3[] faces = new Vector3[6]
+    {
+        new Vector3(0, 0, -1), // Frente
+        new Vector3(0, 0, 1), // Trás
+        new Vector3(1, 0, 0), // Direita
+        new Vector3(-1, 0, 0), // Esquerda
+        new Vector3(0, 1, 0), // Cima
+        new Vector3(0, -1, 0) // Baixo
     };
 }
