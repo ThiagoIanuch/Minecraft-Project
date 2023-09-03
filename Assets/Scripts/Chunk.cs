@@ -6,7 +6,8 @@ public class Chunk : MonoBehaviour
 {
     private static int chunkWidth = 16;
     private static int chunkHeight = 256;
-    private bool[,,] chunkMap = new bool[chunkWidth, chunkHeight, chunkWidth];
+    private BlockType[,,] chunkMap = new BlockType[chunkWidth, chunkHeight, chunkWidth];
+
     private Mesh mesh;
     private List<Vector3> vertices = new List<Vector3>();
     private List<int> triangles = new List<int>();
@@ -28,7 +29,7 @@ public class Chunk : MonoBehaviour
             {
                 for (int z = 0; z < chunkWidth; z++)
                 {
-                    chunkMap[x, y, z] = true;
+                    chunkMap[x, y, z] = BlockType.Stone;
                 }
             }
         }
@@ -47,7 +48,7 @@ public class Chunk : MonoBehaviour
 
                     for (int i = 0; i < 6; i++)
                     {
-                        if (!CheckBlock(vertexPos + Block.faces[i]))
+                        if (CheckBlock(vertexPos + Block.faces[i]) == BlockType.Air)
                         {
                             // Adiciona os vertices e triângulos
                             for (int j = 0; j < 4; j++)
@@ -82,7 +83,7 @@ public class Chunk : MonoBehaviour
     }
 
     // Verifica se existem blocos adjacentes
-    private bool CheckBlock(Vector3 blockPos)
+    private BlockType CheckBlock(Vector3 blockPos)
     {
         int x = (int)blockPos.x;
         int y = (int)blockPos.y;
@@ -90,7 +91,7 @@ public class Chunk : MonoBehaviour
 
         if (x < 0 || x > chunkWidth - 1 || y < 0 || y > chunkHeight - 1 || z < 0 || z > chunkWidth - 1)
         {
-            return false;
+            return BlockType.Air;
         }
 
         return chunkMap[x, y, z];

@@ -86,3 +86,11 @@ public static class Block
         new Vector3(0, -1, 0) // Baixo
     };
 }
+
+public enum BlockType
+{
+    Air = 0,
+    Stone = 1,
+    Grass = 2,
+    Dirt = 3
+}
