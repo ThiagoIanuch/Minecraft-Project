@@ -471,3 +471,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 78a5af22b5ab6c64a9e63c88b42bf765, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  blocks:
+  - blockName: 1
+    isSolid: 0
+    texturesFaces: 
+  - blockName: 2
+    isSolid: 0
+    texturesFaces: 

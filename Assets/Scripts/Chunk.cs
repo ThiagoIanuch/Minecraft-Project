@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,7 +7,8 @@ public class Chunk : MonoBehaviour
 {
     private static int chunkWidth = 16;
     private static int chunkHeight = 256;
-    private BlockType[,,] chunkMap = new BlockType[chunkWidth, chunkHeight, chunkWidth];
+    private int[,,] chunkMap = new int[chunkWidth, chunkHeight, chunkWidth];
+    public Blocks[] blocks;
 
     private Mesh mesh;
     private List<Vector3> vertices = new List<Vector3>();
@@ -29,7 +31,7 @@ public class Chunk : MonoBehaviour
             {
                 for (int z = 0; z < chunkWidth; z++)
                 {
-                    chunkMap[x, y, z] = BlockType.Stone;
+                    //chunkMap[x, y, z] = (int)BlockType.Stone;
                 }
             }
         }
@@ -48,7 +50,7 @@ public class Chunk : MonoBehaviour
 
                     for (int i = 0; i < 6; i++)
                     {
-                        if (CheckBlock(vertexPos + Block.faces[i]) == BlockType.Air)
+                        if (!CheckBlock(vertexPos + Block.faces[i]))
                         {
                             // Adiciona os vertices e triângulos
                             for (int j = 0; j < 4; j++)
@@ -83,7 +85,7 @@ public class Chunk : MonoBehaviour
     }
 
     // Verifica se existem blocos adjacentes
-    private BlockType CheckBlock(Vector3 blockPos)
+    private bool CheckBlock(Vector3 blockPos)
     {
         int x = (int)blockPos.x;
         int y = (int)blockPos.y;
@@ -91,10 +93,10 @@ public class Chunk : MonoBehaviour
 
         if (x < 0 || x > chunkWidth - 1 || y < 0 || y > chunkHeight - 1 || z < 0 || z > chunkWidth - 1)
         {
-            return BlockType.Air;
+            return false;
         }
 
-        return chunkMap[x, y, z];
+        return true;
     }
 
     // Gera a malha do chunk
