@@ -1,5 +1,5 @@
 {
-  "blocks": [
+  "blocktypes": [
     {
       "id": 0,
       "name": "air"

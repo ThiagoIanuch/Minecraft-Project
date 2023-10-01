@@ -87,7 +87,7 @@ public static class Block
     };
 }
 
-// Informações de cada bloco
+// Informações sobre o tipo de bloco
 [System.Serializable]
 public class BlockType
 {
@@ -95,9 +95,9 @@ public class BlockType
     public string name;
 }
 
-// Informações de todos os blocos
+// Informações sobre todos os tipos de blocos
 [System.Serializable]
-public class Blocks
+public class BlockTypes
 {
-    public BlockType[] blocks;
+    public BlockType[] blocktypes;
 }

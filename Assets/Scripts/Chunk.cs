@@ -1,47 +1,38 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Xml.Serialization;
 using UnityEngine;
 
 public class Chunk : MonoBehaviour
 {
-    public TextAsset blockType;
     private Mesh mesh;
     private List<Vector3> vertices = new List<Vector3>();
     private List<int> triangles = new List<int>();
     private List<Vector2> uvs = new List<Vector2>();
+    private BlockTypes blockTypes;
+    private short[,,] chunkMap = new short[chunkWidth, chunkHeight, chunkWidth];
     private static int chunkWidth = 16;
     private static int chunkHeight = 256;
-    private short[,,] chunkMap = new short[chunkWidth, chunkHeight, chunkWidth];
-    private Blocks blocks;
 
     // Start is called before the first frame update
     void Start()
     {
-        blocks = JsonUtility.FromJson<Blocks>(blockType.text);
-
         GenerateChunk();
     }
 
-    // Verifica se existem blocos adjacentes
-    private string CheckBlock(Vector3 blockPos)
+    // Lê os blocos existentes
+    private void ReadBlocks()
     {
-        int x = (int)blockPos.x;
-        int y = (int)blockPos.y;
-        int z = (int)blockPos.z;
+        TextAsset blockTypesData = Resources.Load<TextAsset>("BlockTypes");
 
-        if (x < 0 || x > chunkWidth - 1 || y < 0 || y > chunkHeight - 1 || z < 0 || z > chunkWidth - 1)
-        {
-            return "air";
-        }
-
-        return blocks.blocks[chunkMap[x, y, z]].name;
+        blockTypes = JsonUtility.FromJson<BlockTypes>(blockTypesData.text);
     }
 
     // Gera o chunk
     private void GenerateChunk()
     {
+        ReadBlocks();
+
         // Gera o mapa do chunk
         for (int y = 0; y < chunkHeight; y++)
         {
@@ -100,6 +91,21 @@ public class Chunk : MonoBehaviour
         }
 
         GenerateMesh();
+    }
+
+    // Verifica se existem blocos adjacentes
+    private string CheckBlock(Vector3 blockPos)
+    {
+        int x = (int)blockPos.x;
+        int y = (int)blockPos.y;
+        int z = (int)blockPos.z;
+
+        if (x < 0 || x > chunkWidth - 1 || y < 0 || y > chunkHeight - 1 || z < 0 || z > chunkWidth - 1)
+        {
+            return "air";
+        }
+
+        return blockTypes.blocktypes[chunkMap[x, y, z]].name;
     }
 
     // Gera a malha do chunk
