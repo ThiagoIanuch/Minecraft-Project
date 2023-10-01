@@ -87,22 +87,17 @@ public static class Block
     };
 }
 
-// Tipos de blocos
-
-public enum BlockType 
+// Informações de cada bloco
+[System.Serializable]
+public class BlockType
 {
-    Air = 0,
-    Stone = 1,
-    Grass = 2,
-    Dirt = 3,
+    public int id;
+    public string name;
 }
 
-
-// Blocos
+// Informações de todos os blocos
 [System.Serializable]
 public class Blocks
 {
-    public BlockType blockName;
-    public bool isSolid;
-    public int[] texturesFaces;
+    public BlockType[] blocks;
 }

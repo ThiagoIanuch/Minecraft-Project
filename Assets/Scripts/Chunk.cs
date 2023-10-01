@@ -1,24 +1,42 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Xml.Serialization;
 using UnityEngine;
 
 public class Chunk : MonoBehaviour
 {
-    private static int chunkWidth = 16;
-    private static int chunkHeight = 256;
-    private int[,,] chunkMap = new int[chunkWidth, chunkHeight, chunkWidth];
-    public Blocks[] blocks;
-
+    public TextAsset blockType;
     private Mesh mesh;
     private List<Vector3> vertices = new List<Vector3>();
     private List<int> triangles = new List<int>();
     private List<Vector2> uvs = new List<Vector2>();
+    private static int chunkWidth = 16;
+    private static int chunkHeight = 256;
+    private short[,,] chunkMap = new short[chunkWidth, chunkHeight, chunkWidth];
+    private Blocks blocks;
 
     // Start is called before the first frame update
     void Start()
     {
+        blocks = JsonUtility.FromJson<Blocks>(blockType.text);
+
         GenerateChunk();
+    }
+
+    // Verifica se existem blocos adjacentes
+    private string CheckBlock(Vector3 blockPos)
+    {
+        int x = (int)blockPos.x;
+        int y = (int)blockPos.y;
+        int z = (int)blockPos.z;
+
+        if (x < 0 || x > chunkWidth - 1 || y < 0 || y > chunkHeight - 1 || z < 0 || z > chunkWidth - 1)
+        {
+            return "air";
+        }
+
+        return blocks.blocks[chunkMap[x, y, z]].name;
     }
 
     // Gera o chunk
@@ -31,8 +49,8 @@ public class Chunk : MonoBehaviour
             {
                 for (int z = 0; z < chunkWidth; z++)
                 {
-                    //chunkMap[x, y, z] = (int)BlockType.Stone;
-                }
+                    chunkMap[x, y, z] = 1;
+                }   
             }
         }
 
@@ -50,7 +68,7 @@ public class Chunk : MonoBehaviour
 
                     for (int i = 0; i < 6; i++)
                     {
-                        if (!CheckBlock(vertexPos + Block.faces[i]))
+                        if (CheckBlock(vertexPos + Block.faces[i]) == "air")
                         {
                             // Adiciona os vertices e triângulos
                             for (int j = 0; j < 4; j++)
@@ -82,21 +100,6 @@ public class Chunk : MonoBehaviour
         }
 
         GenerateMesh();
-    }
-
-    // Verifica se existem blocos adjacentes
-    private bool CheckBlock(Vector3 blockPos)
-    {
-        int x = (int)blockPos.x;
-        int y = (int)blockPos.y;
-        int z = (int)blockPos.z;
-
-        if (x < 0 || x > chunkWidth - 1 || y < 0 || y > chunkHeight - 1 || z < 0 || z > chunkWidth - 1)
-        {
-            return false;
-        }
-
-        return true;
     }
 
     // Gera a malha do chunk
